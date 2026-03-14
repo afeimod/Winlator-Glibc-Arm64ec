@@ -216,9 +216,26 @@ public class ContainerDetailFragment extends Fragment {
         byte previousStartupSelection = isEditMode() ? container.getStartupSelection() : -1;
         sStartupSelection.setSelection(previousStartupSelection != -1 ? previousStartupSelection : Container.STARTUP_SELECTION_ESSENTIAL);
 
+        // ----- WineMode 根据 WineVersion 自动设置并禁用 -----
         final Spinner sWineMode = view.findViewById(R.id.SWineMode);
-        byte previousWineMode = isEditMode() ? container.getWineMode() : -1;
-        sWineMode.setSelection(previousWineMode != -1 ? previousWineMode : Container.WINE_MODE_NORMAL);
+
+        // 根据当前 wineVersion 设置 wineMode 的初始选中项
+        updateWineModeFromWineVersion(sWineVersion, sWineMode);
+
+        // 监听 wineVersion 的变化，实时更新 wineMode
+        sWineVersion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateWineModeFromWineVersion(sWineVersion, sWineMode);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        // 强制禁用 wineMode，禁止用户手动修改
+        sWineMode.setEnabled(false);
+        // ----- 修改结束 -----
 
         final Spinner sBox86Preset = view.findViewById(R.id.SBox86Preset);
         Box86_64PresetManager.loadSpinner("box86", sBox86Preset, isEditMode() ? container.getBox86Preset() : preferences.getString("box86_preset", Box86_64Preset.COMPATIBILITY));
@@ -359,6 +376,14 @@ public class ContainerDetailFragment extends Fragment {
             catch (JSONException e) {}
         });
         return view;
+    }
+
+    // 新增辅助方法：根据 wineVersion 自动设置 wineMode
+    private void updateWineModeFromWineVersion(Spinner wineVersionSpinner, Spinner wineModeSpinner) {
+        String selectedVersion = wineVersionSpinner.getSelectedItem().toString();
+        boolean isArm64ec = selectedVersion.toLowerCase(Locale.ENGLISH).contains("arm64ec");
+        int modeIndex = isArm64ec ? Container.WINE_MODE_FEX : Container.WINE_MODE_NORMAL;
+        wineModeSpinner.setSelection(modeIndex);
     }
 
     private void saveWineRegistryKeys(View view) {
