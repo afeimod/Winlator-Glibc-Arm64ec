@@ -234,8 +234,7 @@ public class ContainerDetailFragment extends Fragment {
         });
 
         // 强制禁用 wineMode，禁止用户手动修改
-        sWineMode.setEnabled(false);
-        // ----- 修改结束 -----
+        //sWineMode.setEnabled(false);
 
         final Spinner sBox86Preset = view.findViewById(R.id.SBox86Preset);
         Box86_64PresetManager.loadSpinner("box86", sBox86Preset, isEditMode() ? container.getBox86Preset() : preferences.getString("box86_preset", Box86_64Preset.COMPATIBILITY));
