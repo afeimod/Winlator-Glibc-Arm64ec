@@ -425,6 +425,10 @@ public class XServerDisplayActivity extends AppCompatActivity implements Navigat
             case R.id.main_menu_touchpad_help:
                 showTouchpadHelpDialog();
                 break;
+            case R.id.main_menu_fix_rootfs_permissions:
+                fixRootfsPermissions();
+                drawerLayout.closeDrawers();
+                break;
             case R.id.main_menu_exit:
                 finish();
                 break;
@@ -1087,5 +1091,19 @@ public class XServerDisplayActivity extends AppCompatActivity implements Navigat
             frameRatingWindowId = -1;
             runOnUiThread(() -> frameRating.setVisibility(View.GONE));
         }
+    }
+
+    private void fixRootfsPermissions() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            File rootfsDir = new File(getFilesDir(), "imagefs");
+            int result = ProcessHelper.exec("chmod -R 777 \"" + rootfsDir.getAbsolutePath() + "\"");
+            runOnUiThread(() -> {
+                if (result == 0) {
+                    AppUtils.showToast(this, R.string.permissions_fixed);
+                } else {
+                    AppUtils.showToast(this, R.string.permissions_fix_failed);
+                }
+            });
+        });
     }
 }
