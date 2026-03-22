@@ -313,7 +313,7 @@
     <string name="real_time_log">实时日志</string>
     <string name="terminal_output_exported">终端输出已导出到</string>
     <string name="export_failed">导出失败</string>
-    <string name="fix_rootfs_permissions">修复 Rootfs 权限</string>
+    <string name="fix_rootfs_permissions">修复权限</string>
     <string name="permissions_fixed">权限修复完成</string>
     <string name="permissions_fix_failed">权限修复失败</string>
 </resources>

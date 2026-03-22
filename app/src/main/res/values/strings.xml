@@ -367,7 +367,7 @@
     <string name="real_time_log">Real-time Log</string>
     <string name="terminal_output_exported">Terminal output exported to</string>
     <string name="export_failed">Export failed</string>
-    <string name="fix_rootfs_permissions">Fix Rootfs Permissions</string>
+    <string name="fix_rootfs_permissions">Fix Permissions</string>
     <string name="permissions_fixed">Permissions fixed</string>
     <string name="permissions_fix_failed">Failed to fix permissions</string>
 </resources>
