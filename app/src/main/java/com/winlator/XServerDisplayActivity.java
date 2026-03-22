@@ -1096,9 +1096,16 @@ public class XServerDisplayActivity extends AppCompatActivity implements Navigat
     private void fixRootfsPermissions() {
         Executors.newSingleThreadExecutor().execute(() -> {
             File rootfsDir = new File(getFilesDir(), "imagefs");
-            int result = ProcessHelper.exec("chmod -R 777 \"" + rootfsDir.getAbsolutePath() + "\"");
+            int result = -1;
+            try {
+                Process process = Runtime.getRuntime().exec(new String[]{"chmod", "-R", "777", rootfsDir.getAbsolutePath()});
+                result = process.waitFor();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            final int finalResult = result;
             runOnUiThread(() -> {
-                if (result == 0) {
+                if (finalResult == 0) {
                     AppUtils.showToast(this, R.string.permissions_fixed);
                 } else {
                     AppUtils.showToast(this, R.string.permissions_fix_failed);
