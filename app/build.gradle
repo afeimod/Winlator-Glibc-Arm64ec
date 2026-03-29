@@ -63,4 +63,5 @@ dependencies {
     implementation(libs.zstd.jni) { artifact { type = 'aar' } }
     implementation files('libs/MidiSynth/MidiSynth.jar')
     implementation files('libs/MTDataFiles.jar')
+    implementation project(':tx11')
 }

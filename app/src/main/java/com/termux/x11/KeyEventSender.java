@@ -22,6 +22,7 @@ import java.util.TreeSet;
 
 /**
  * 从 Termux-x11 复制而来。处理 activity 的一般按键事件（如输入法）。
+ * 英文括号 () 等，和中文都无法输入
  */
 class KeyEventSender {
     static KeyEventSender instance = new KeyEventSender();
